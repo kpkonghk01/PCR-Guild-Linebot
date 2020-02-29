@@ -1,0 +1,22 @@
+{
+  "name": "pcr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://jj9nwu5mj2uv@jacen.dev/home/jj9nwu5mj2uv/pcr"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@line/bot-sdk": "^6.8.4",
+    "dotenv": "^8.2.0",
+    "koa": "^2.11.0"
+  },
+  "devDependencies": {}
+}
