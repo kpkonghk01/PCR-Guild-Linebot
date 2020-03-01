@@ -17,12 +17,12 @@ const {
 const manual = {
   member: [
     '一般指令:',
-    '到x王/{x}王上線',
-    '排x王',
-    '棄x王',
+    '到{x}王/{x}王上線',
+    '排{x}王/報{x}王',
+    '棄{x}王',
     '完刀',
     'Q',
-    'Qx',
+    'Q{x}',
     'Qs',
     'S',
     'I am Master!',
@@ -31,16 +31,17 @@ const manual = {
   ],
   master: [
     '會長指令:',
-    '取消{username}',
-    '取消{username} {x}王',
-    '{username}完刀 ',
-    '{username} {x}王完刀',
-    '{username}排{x}王',
-    '註銷{username}',
+    '取消 @{username}',
+    '取消 @{username} {x}王',
+    '@{username}完刀 ',
+    '@{username} {x}王完刀',
+    '@{username} 排{x}王',
+    '註銷 @{username}',
     '查水錶',
     '',
   ],
   remark: [
+    '{x} = 1-5',
     '每朝5時重置排刀和水錶',
   ]
 };
@@ -102,6 +103,8 @@ let queue = [
 ];
 
 // TODO: handle change displayName
+// TODO: support independent counter and queue for different group chat
+// TODO: need a db?
 let watermeter = {
   // [userId]: {
   //   displayName,
@@ -159,19 +162,19 @@ const extractor = {
 
   // master cmd
   [CANCEL_USER_CURRENT_QUEUE]: text => {
-    const [, displayName] = (text.match(/^取消@([^1-5]+)$/) || []);
+    const [, displayName] = (text.match(/^取消 @([^1-5]+)$/) || []);
     return displayName
       ? { displayName: R.trim(displayName) }
       : false;
   },
   [CANCEL_USER_X_QUEUE]: text => {
-    const [, displayName, x] = (text.match(/^取消@([^1-5]+)([1-5])王$/) || []);
+    const [, displayName, x] = (text.match(/^取消 @([^1-5]+)([1-5])王$/) || []);
     return displayName
       ? { displayName: R.trim(displayName), x: ~~x - 1 }
       : false;
   },
   [FINISH_USER_CURRENT_QUEUE]: text => {
-    const [, displayName] = (text.match(/^@([^1-5]+)完刀$/) || []);
+    const [, displayName] = (text.match(/^@([^完刀]+) 完刀$/) || []);
     return displayName
       ? { displayName: R.trim(displayName) }
       : false;
@@ -183,13 +186,13 @@ const extractor = {
       : false;
   },
   [REGISTER_USER_X_QUEUE]: text => {
-    const [, displayName, x] = (text.match(/^@([^1-5排報]+)(?:排|報)([1-5])王$/) || []);
+    const [, displayName, x] = (text.match(/^@([^排報]+)(?:排|報)([1-5])王$/) || []);
     return displayName
       ? { displayName: R.trim(displayName), x: ~~x - 1 }
       : false;
   },
   [DELETE_USER]: text => {
-    const [, displayName] = (text.match(/^註銷@([^@]+)$/) || []);
+    const [, displayName] = (text.match(/^註銷 @([^@]+)$/) || []);
     return displayName
       ? { displayName: R.trim(displayName) }
       : false;
@@ -465,7 +468,7 @@ const cmdHandler = {
 
       return client.replyMessage(replyToken, {
         type: 'text',
-        text: `@${displayName} 已棄 ${current + 1}王, 現有 ${queue[x].length} 人輪候`,
+        text: `@${displayName} 已棄 ${current + 1}王, 現有 ${queue[current].length} 人輪候`,
       });
     }
 

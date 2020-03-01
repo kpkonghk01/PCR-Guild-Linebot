@@ -21,9 +21,9 @@ env:
  - user ID
 
 members cmd:
-到x王/x王上線   (change current to x)
-排x王   (append username to x queue)
-棄x王   (delete first username from x queue)
+到{x}王/{x}王上線   (change current to x)
+排{x}王/報{x}王     (append username to x queue)
+棄{x}王            (delete first username from x queue)
 完刀    (delete first username from current queue, finish +1)
 Q      (return first 5 usernames of current queue)
 Qx     (return first 5 usernames of x queue)
@@ -32,12 +32,12 @@ S      (return finish)
 help   (print manual)
 
 master cmd:
-取消{username}      (delete first username from current queue)
-取消{username} x王  (delete first username from x queue)
-{username}完刀      (delete first username from current queue)
-{username} x王完刀  (delete first username from x queue)
-{username}排x王     (append username to x queue)
-註銷{username}      (remove username from watermeter)
+取消 @{username}      (delete first username from current queue)
+取消 @{username} {x}王  (delete first username from x queue)
+@{username} 完刀      (delete first username from current queue)
+@{username} {x}王完刀  (delete first username from x queue)
+@{username} 排{x}王     (append username to x queue)
+註銷 @{username}      (remove username from watermeter)
 查水錶              (return watermeter usernames who's userFinish < 3)
 
 cronjob:
